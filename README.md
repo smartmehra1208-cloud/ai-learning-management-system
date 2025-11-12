@@ -36,7 +36,7 @@ An intelligent Learning Management System (LMS) that leverages artificial intell
 ## Project Details
 
 ### 1. Landing Page & Hero Section
-After Login Page[Login Interface](Screenshot 2025-11-12 214127.png)
+After Login Page[[Screenshot 2025-11-12 214127.png](`Screenshot 2025-11-12 214127.png`)
 *The landing page features a gradient hero section with a compelling call-to-action. It introduces users to the AI-powered learning system with a clean, modern design that immediately communicates the platform's value proposition.*
 
 **Key Features:**
