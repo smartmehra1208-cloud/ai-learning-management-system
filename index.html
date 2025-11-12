@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Learning Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f5f7fb;
+            --dark: #212529;
+            --accent: #f72585;
+            --accent-light: #ffb4d9;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(67, 97, 238, 0.85), rgba(58, 12, 163, 0.85)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem 1.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 12, 163, 0.3);
+        }
+        
+        .subject-card {
+            cursor: pointer;
+            text-align: center;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        
+        .subject-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .subject-card:hover i {
+            color: var(--accent);
+            transform: scale(1.2);
+        }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .test-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-question {
+            margin-bottom: 1.5rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .feature-icon {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .course-level {
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .beginner {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        
+        .intermediate {
+            background-color: #b8daff;
+            color: #004085;
+        }
+        
+        .advanced {
+            background-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        footer {
+            margin-top: auto;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .forgot-password-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        .forgot-password-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* AI Model Implementation Styles */
+        .ai-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 0;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .training-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+        
+        .ai-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .ai-progress {
+            height: 25px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+        
+        .model-performance {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-importance {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-bar {
+            height: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        
+        .training-step {
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .training-controls {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .subject-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .data-science {
+            background-color: #e6f7ff;
+            color: #0066cc;
+        }
+        
+        .software {
+            background-color: #e6fff2;
+            color: #00a366;
+        }
+        
+        .web-dev {
+            background-color: #fff0e6;
+            color: #cc5500;
+        }
+        
+        .weakness-tag {
+            display: inline-block;
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .strength-tag {
+            display: inline-block;
+            background-color: #e6ffe6;
+            color: #00cc00;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--dark);
+        }
+        
+        /* New styles for enhanced UI */
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .test-score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .test-completion-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .test-card {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-card.active {
+            border: 2px solid var(--primary);
+        }
+        
+        .hero-features {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .feature-item i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain me-2"></i> AI Learning System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="navHome">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="navCourses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="navDashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="navAIAnalysis">AI Analysis</a>
+                    </li>
+                    <li class="nav-item" id="navLoginItem">
+                        <a class="nav-link" href="#" id="navLogin">Login</a>
+                    </li>
+                    <li class="nav-item hidden" id="navUserItem">
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <a class="nav-link" href="#" id="navLogout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="container" id="loginSection">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Login to Your Account</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <div class="mb-3 text-end">
+                    <a href="#" class="forgot-password-link" id="forgotPasswordLink">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Don't have an account? <a href="#" id="registerLink">Register</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Section -->
+    <div class="container hidden" id="forgotPasswordSection">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Reset Password</h2>
+            <form id="forgotPasswordForm">
+                <div class="mb-3">
+                    <label for="resetEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="resetEmail" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Remember your password? <a href="#" id="backToLoginLink">Back to Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Password Section -->
+    <div class="container hidden" id="resetPasswordSection">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Create New Password</h2>
+            <form id="resetPasswordForm">
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="newPassword" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control" id="confirmNewPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Section -->
+    <div class="container hidden" id="registerSection">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Create an Account</h2>
+            <form id="registerForm">
+                <div class="mb-3">
+                    <label for="regName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="regName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="regEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="regEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="regPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="regPassword" required>
+                </div>
+                <div class="mb-3">
+                    <label for="regConfirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="regConfirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="#" id="loginLink">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container hidden" id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container text-center">
+                <h1 class="display-4 fw-bold mb-4">AI-Powered Learning Management System</h1>
+                <p class="lead mb-4">Personalized learning paths based on your aptitude and performance</p>
+                <button class="btn btn-light btn-lg px-4 py-2 fw-bold pulse" id="getStartedBtn">Get Started</button>
+                
+                <div class="row hero-features mt-5">
+                    <div class="col-md-4 feature-item">
+                        <i class="fas fa-user-graduate"></i>
+                        <div class="stats-number">5,000+</div>
+                        <div class="stats-label">Active Learners</div>
+                    </div>
+                    <div class="col-md-4 feature-item">
+                        <i class="fas fa-book"></i>
+                        <div class="stats-number">120+</div>
+                        <div class="stats-label">Courses Available</div>
+                    </div>
+                    <div class="col-md-4 feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="stats-number">96%</div>
+                        <div class="stats-label">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subject Selection Section (Initially Hidden) -->
+        <div id="subjectSelection" class="hidden">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">Select Your Subject</h2>
+                    <p class="lead">Choose a subject to begin your personalized learning journey</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card subject-card" data-subject="Data Science">
+                        <div class="card-body">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Data Science</h4>
+                            <p>Statistics, Machine Learning, Data Visualization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card subject-card" data-subject="Software Engineering">
+                        <div class="card-body">
+                            <i class="fas fa-laptop-code"></i>
+                            <h4>Software Engineering</h4>
+                            <p>Programming, Algorithms, System Design</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card subject-card" data-subject="Web Development">
+                        <div class="card-body">
+                            <i class="fas fa-code"></i>
+                            <h4>Web Development</h4>
+                            <p>Frontend, Backend, Database Technologies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Selection Section (Initially Hidden) -->
+        <div id="testSelection" class="hidden">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">Select Test for <span id="testSubject">Data Science</span></h2>
+                    <p class="lead">Complete 3 demo tests to evaluate your current knowledge level</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card test-card" data-test="1">
+                        <div class="card-body text-center">
+                            <h4>Test 1</h4>
+                            <p>Fundamentals Assessment</p>
+                            <div class="test-score-display" id="test1ScoreDisplay">-</div>
+                            <p>Basic concepts and principles</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card test-card" data-test="2">
+                        <div class="card-body text-center">
+                            <h4>Test 2</h4>
+                            <p>Intermediate Concepts</p>
+                            <div class="test-score-display" id="test2ScoreDisplay">-</div>
+                            <p>Application and analysis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card test-card" data-test="3">
+                        <div class="card-body text-center">
+                            <h4>Test 3</h4>
+                            <p>Advanced Topics</p>
+                            <div class="test-score-display" id="test3ScoreDisplay">-</div>
+                            <p>Complex problem solving</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button id="viewResultsBtn" class="btn btn-primary btn-lg hidden">View Results</button>
+                <button id="backToSubjectsBtn" class="btn btn-outline-secondary">Back to Subjects</button>
+            </div>
+        </div>
+
+        <!-- Demo Test Section (Initially Hidden) -->
+        <div id="demoTest" class="hidden">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2><span id="currentSubject">Data Science</span> - Test <span id="currentTestNumber">1</span></h2>
+                    <p class="lead" id="testDescription">Fundamentals Assessment</p>
+                    <div class="progress mt-4">
+                        <div id="testProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p id="testStatus" class="mt-2">Question 1 of 5</p>
+                </div>
+            </div>
+            
+            <div class="test-container">
+                <div id="testContent">
+                    <h4 class="mb-4" id="questionTitle">Question 1</h4>
+                    <div class="test-question">
+                        <p id="questionText">What is the primary goal of machine learning?</p>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="answer" id="option1" value="A">
+                            <label class="form-check-label" for="option1">
+                                Creating algorithms that can learn from and make predictions on data
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="answer" id="option2" value="B">
+                            <label class="form-check-label" for="option2">
+                                Building faster computers
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="answer" id="option3" value="C">
+                            <label class="form-check-label" for="option3">
+                                Designing user interfaces
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="answer" id="option4" value="D">
+                            <label class="form-check-label" for="option4">
+                                Writing documentation for software
+                            </label>
+                        </div>
+                    </div>
+                    <button id="nextQuestionBtn" class="btn btn-primary mt-3">Next Question</button>
+                    <button id="submitTestBtn" class="btn btn-success mt-3 hidden">Submit Test</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section (Initially Hidden) -->
+        <div id="resultsSection" class="hidden">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">Your Learning Path Recommendation</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>AI-Personalized Course Recommendation</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Subject: <span id="resultSubject">Data Science</span></h5>
+                                    <h5>Your Level: <span id="resultLevel" class="course-level beginner">Beginner</span></h5>
+                                    <h5>Recommended Course:</h5>
+                                    <p id="recommendedCourse">Introduction to Data Science Fundamentals</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Test Scores:</h5>
+                                    <p>Test 1: <span id="test1Score">65</span>/100</p>
+                                    <p>Test 2: <span id="test2Score">72</span>/100</p>
+                                    <p>Test 3: <span id="test3Score">58</span>/100</p>
+                                    <p>Best Score: <span id="bestScore">72</span>/100</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5>Your Learning Path:</h5>
+                            <div id="learningPath" class="mt-3">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            <button class="btn btn-primary mt-4" id="viewAIAnalysisBtn">View Detailed AI Analysis</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Analysis Section (Initially Hidden) -->
+        <div id="aiAnalysisSection" class="hidden">
+            <div class="ai-header text-center">
+                <h1><i class="fas fa-robot ai-icon"></i>AI Test Analysis System</h1>
+                <p class="lead">Machine learning techniques to analyze test results and provide personalized recommendations</p>
+            </div>
+
+            <ul class="nav nav-tabs mb-4" id="aiAnalysisTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="model-tab" data-bs-toggle="tab" data-bs-target="#model" type="button" role="tab">Model Implementation</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="performance-tab" data-bs-toggle="tab" data-bs-target="#performance" type="button" role="tab">Performance Metrics</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="subject-tab" data-bs-toggle="tab" data-bs-target="#subject" type="button" role="tab">Subject Analysis</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="aiAnalysisTabContent">
+                <div class="tab-pane fade show active" id="model" role="tabpanel">
+                    <div class="training-section">
+                        <h3><i class="fas fa-brain"></i> AI Model Implementation</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Input Features</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Test scores across subjects</li>
+                                            <li class="list-group-item">Time spent per question</li>
+                                            <li class="list-group-item">Question difficulty levels</li>
+                                            <li class="list-group-item">Topic categorization</li>
+                                            <li class="list-group-item">Answer patterns</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Model Outputs</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Proficiency level estimation</li>
+                                            <li class="list-group-item">Knowledge gap identification</li>
+                                            <li class="list-group-item">Personalized learning path</li>
+                                            <li class="list-group-item">Recommended study materials</li>
+                                            <li class="list-group-item">Predicted performance growth</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4"><i class="fas fa-cogs"></i> Implementation Process</h3>
+                        <div class="training-step">
+                            <h5>Step 1: Data Collection & Preprocessing</h5>
+                            <p>Collecting historical test data from 5,000+ students across different proficiency levels</p>
+                            <div class="progress ai-progress">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="training-step">
+                            <h5>Step 2: Feature Engineering</h5>
+                            <p>Creating meaningful features from raw test data to improve model performance</p>
+                            <div class="progress ai-progress">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="training-step">
+                            <h5>Step 3: Model Selection</h5>
+                            <p>Testing multiple algorithms to identify the best performing model</p>
+                            <div class="progress ai-progress">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="training-step">
+                            <h5>Step 4: Model Training</h5>
+                            <p>Training the selected model on 80% of the available data</p>
+                            <div class="progress ai-progress">
+                                <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Complete</div>
+                            </div>
+                        </div>
+                        
+                        <div class="training-step">
+                            <h5>Step 5: Model Validation</h5>
+                            <p>Evaluating model performance on the remaining 20% of data</p>
+                            <div class="progress ai-progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0% Complete</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="performance" role="tabpanel">
+                    <div class="training-section">
+                        <h3><i class="fas fa-chart-line"></i> Model Performance Metrics</h3>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="model-performance">
+                                    <h5>Accuracy: 92.3%</h5>
+                                    <p>Percentage of correct proficiency level predictions</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="model-performance">
+                                    <h5>Precision: 89.7%</h5>
+                                    <p>Consistency of proficiency level predictions</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="model-performance">
+                                    <h5>Recall: 94.1%</h5>
+                                    <p>Ability to identify all knowledge gaps</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="model-performance">
+                                    <h5>F1-Score: 91.8%</h5>
+                                    <p>Balance between precision and recall</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h4><i class="fas fa-tasks"></i> Model Implementation Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Algorithm</th>
+                                        <td>Gradient Boosting Machine</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Training Data</th>
+                                        <td>5,200 student records</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Features</th>
+                                        <td>42 engineered features</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Training Time</th>
+                                        <td>2 hours 15 minutes</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cross-Validation</th>
+                                        <td>5-fold stratified</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Hyperparameter Tuning</th>
+                                        <td>Bayesian Optimization</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="subject" role="tabpanel">
+                    <div class="training-section">
+                        <h3><i class="fas fa-graduation-cap"></i> Test Subject Analysis</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Data Science</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="subject-badge data-science">15 Questions</span>
+                                        <span class="subject-badge data-science">3 Tests</span>
+                                        
+                                        <h6 class="mt-3">Common Weaknesses:</h6>
+                                        <span class="weakness-tag">PCA</span>
+                                        <span class="weakness-tag">Regularization</span>
+                                        <span class="weakness-tag">Bias-Variance</span>
+                                        
+                                        <h6 class="mt-3">Common Strengths:</h6>
+                                        <span class="strength-tag">Statistics</span>
+                                        <span class="strength-tag">Data Visualization</span>
+                                        <span class="strength-tag">SQL</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Software Engineering</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="subject-badge software">15 Questions</span>
+                                        <span class="subject-badge software">3 Tests</span>
+                                        
+                                        <h6 class="mt-3">Common Weaknesses:</h6>
+                                        <span class="weakness-tag">Design Patterns</span>
+                                        <span class="weakness-tag">SOLID Principles</span>
+                                        <span class="weakness-tag">CI/CD</span>
+                                        
+                                        <h6 class="mt-3">Common Strengths:</h6>
+                                        <span class="strength-tag">OOP</span>
+                                        <span class="strength-tag">Version Control</span>
+                                        <span class="strength-tag">APIs</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Web Development</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="subject-badge web-dev">15 Questions</span>
+                                        <span class="subject-badge web-dev">3 Tests</span>
+                                        
+                                        <h6 class="mt-3">Common Weaknesses:</h6>
+                                        <span class="weakness-tag">CORS</span>
+                                        <span class="weakness-tag">SPA Optimization</span>
+                                        <span class="weakness-tag">HTTP/HTTPS</span>
+                                        
+                                        <h6 class="mt-3">Common Strengths:</h6>
+                                        <span class="strength-tag">CSS</span>
+                                        <span class="strength-tag">JavaScript</span>
+                                        <span class="strength-tag">Responsive Design</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h4><i class="fas fa-lightbulb"></i> Feature Importance</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="feature-importance">
+                                    <p>Overall test score</p>
+                                    <div class="feature-bar" style="width: 95%"></div>
+                                </div>
+                                <div class="feature-importance">
+                                    <p>Score consistency across tests</p>
+                                    <div class="feature-bar" style="width: 87%"></div>
+                                </div>
+                                <div class="feature-importance">
+                                    <p>Time spent on difficult questions</p>
+                                    <div class="feature-bar" style="width: 78%"></div>
+                                </div>
+                                <div class="feature-importance">
+                                    <p>Performance on specific topics</p>
+                                    <div class="feature-bar" style="width: 82%"></div>
+                                </div>
+                                <div class="feature-importance">
+                                    <p>Answer pattern analysis</p>
+                                    <div class="feature-bar" style="width: 75%"></div>
+                                </div>
+                                <div class="feature-importance">
+                                    <p>Error type classification</p>
+                                    <div class="feature-bar" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="training-controls">
+                <h3 class="text-center mb-4"><i class="fas fa-play-circle"></i> Model Controls</h3>
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-primary btn-lg" id="trainModel"><i class="fas fa-play"></i> Train Model</button>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-warning btn-lg" id="pauseModel"><i class="fas fa-pause"></i> Pause Training</button>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <button class="btn btn-danger btn-lg" id="resetModel"><i class="fas fa-redo"></i> Reset Model</button>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Model Parameters</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Learning Rate</label>
+                                <input type="range" class="form-range" id="learningRate" min="0.01" max="0.3" step="0.01" value="0.1">
+                                <div class="form-text">Current: 0.1</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Number of Estimators</label>
+                                <input type="range" class="form-range" id="nEstimators" min="50" max="500" step="10" value="200">
+                                <div class="form-text">Current: 200</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Max Depth</label>
+                                <input type="range" class="form-range" id="maxDepth" min="3" max="15" step="1" value="6">
+                                <div class="form-text">Current: 6</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Subsample Ratio</label>
+                                <input type="range" class="form-range" id="subsample" min="0.5" max="1.0" step="0.05" value="0.8">
+                                <div class="form-text">Current: 0.8</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Overview Section -->
+        <div id="systemOverview">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">How It Works</h2>
+                    <p class="lead">Our AI-powered Learning Management System personalizes your educational journey based on your unique strengths and weaknesses</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h4>Study Material Delivery</h4>
+                            <p>Get access to relevant study materials based on your selected subject and proficiency level. Our AI curates the best resources for your learning style.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4>Performance Tracking</h4>
+                            <p>Take 3 subject-specific demo tests to evaluate your current knowledge and skills. Our system tracks your progress and identifies areas for improvement.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h4>AI Customization</h4>
+                            <p>Our AI analyzes your performance and creates a personalized learning path just for you. It adapts as you progress, ensuring optimal learning outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Step-by-Step Process</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <h5>Select Your Subject</h5>
+                                    <p>Choose from various subjects like Data Science, Software Engineering, or Web Development based on your interests and career goals.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <h5>Take Demo Tests</h5>
+                                    <p>Complete 3 subject-specific demo tests at different difficulty levels to evaluate your current knowledge level and identify strengths and weaknesses.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <h5>AI Analysis</h5>
+                                    <p>Our advanced AI engine analyzes your performance across all tests, identifies patterns, and determines your proficiency level with precision.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="step-number">4</div>
+                                <div>
+                                    <h5>Personalized Learning Path</h5>
+                                    <p>Receive a customized course recommendation and learning path based on your test results, designed to maximize your learning efficiency.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">Why Choose Our AI Learning System?</h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-bolt text-warning me-2"></i> Personalized Learning</h5>
+                            <p>Our AI tailors the educational content to your specific needs, ensuring you focus on areas that need improvement while reinforcing your strengths.</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-chart-line text-success me-2"></i> Progress Tracking</h5>
+                            <p>Monitor your learning journey with detailed analytics and visualizations that show your improvement over time across different skill areas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-graduation-cap text-primary me-2"></i> Expert Content</h5>
+                            <p>Access high-quality learning materials created by industry experts and educators, curated specifically for your learning path.</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-clock text-info me-2"></i> Adaptive Scheduling</h5>
+                            <p>Our system adapts to your pace and schedule, providing recommendations for optimal study times based on your performance patterns.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>AI Learning Management System</h5>
+                    <p>Personalized education powered by artificial intelligence. Transforming how students learn and grow.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2023 AI Learning System. All rights reserved.</p>
+                    <div class="mt-2">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App Script -->
+    <script>
+        $(document).ready(function() {
+            // User management
+            let currentUser = null;
+            
+            // Check if user is logged in from localStorage
+            function checkLoginStatus() {
+                const userData = localStorage.getItem('currentUser');
+                if (userData) {
+                    currentUser = JSON.parse(userData);
+                    updateUIForLoggedInUser();
+                }
+            }
+            
+            // Update UI for logged in user
+            function updateUIForLoggedInUser() {
+                if (currentUser) {
+                    $('#navLoginItem').addClass('hidden');
+                    $('#navUserItem').removeClass('hidden');
+                    $('#userAvatar').text(currentUser.name.charAt(0).toUpperCase());
+                    $('#loginSection, #registerSection, #forgotPasswordSection, #resetPasswordSection').addClass('hidden');
+                    $('#mainContent').removeClass('hidden');
+                } else {
+                    $('#navLoginItem').removeClass('hidden');
+                    $('#navUserItem').addClass('hidden');
+                    $('#mainContent').addClass('hidden');
+                    $('#loginSection').removeClass('hidden');
+                    $('#registerSection, #forgotPasswordSection, #resetPasswordSection').addClass('hidden');
+                }
+            }
+            
+            // Handle login form submission
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                const email = $('#email').val();
+                const password = $('#password').val();
+                
+                // Check if user exists in localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    updateUIForLoggedInUser();
+                    
+                    // Show success message
+                    alert('Login successful! Welcome back, ' + user.name);
+                } else {
+                    alert('Invalid email or password. Please try again.');
+                }
+            });
+            
+            // Handle register form submission
+            $('#registerForm').on('submit', function(e) {
+                e.preventDefault();
+                const name = $('#regName').val();
+                const email = $('#regEmail').val();
+                const password = $('#regPassword').val();
+                const confirmPassword = $('#regConfirmPassword').val();
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                // Check if user already exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                if (users.some(user => user.email === email)) {
+                    alert('User with this email already exists!');
+                    return;
+                }
+                
+                // Create new user
+                const newUser = { name, email, password };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Auto login
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                updateUIForLoggedInUser();
+                
+                alert('Registration successful! Welcome to our platform, ' + name);
+            });
+            
+            // Handle logout
+            $('#navLogout').on('click', function(e) {
+                e.preventDefault();
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                updateUIForLoggedInUser();
+                alert('You have been logged out successfully.');
+            });
+            
+            // Switch to register form
+            $('#registerLink').on('click', function(e) {
+                e.preventDefault();
+                $('#loginSection, #forgotPasswordSection, #resetPasswordSection').addClass('hidden');
+                $('#registerSection').removeClass('hidden');
+            });
+            
+            // Switch to login form
+            $('#loginLink').on('click', function(e) {
+                e.preventDefault();
+                $('#registerSection, #forgotPasswordSection, #resetPasswordSection').addClass('hidden');
+                $('#loginSection').removeClass('hidden');
+            });
+            
+            // Forgot password functionality
+            $('#forgotPasswordLink').on('click', function(e) {
+                e.preventDefault();
+                $('#loginSection, #registerSection, #resetPasswordSection').addClass('hidden');
+                $('#forgotPasswordSection').removeClass('hidden');
+            });
+            
+            $('#backToLoginLink').on('click', function(e) {
+                e.preventDefault();
+                $('#forgotPasswordSection, #registerSection, #resetPasswordSection').addClass('hidden');
+                $('#loginSection').removeClass('hidden');
+            });
+            
+            // Handle forgot password form
+            $('#forgotPasswordForm').on('submit', function(e) {
+                e.preventDefault();
+                const email = $('#resetEmail').val();
+                
+                // Check if user exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const userExists = users.some(user => user.email === email);
+                
+                if (userExists) {
+                    // In a real application, you would send an email here
+                    // For this demo, we'll just show the reset password form
+                    $('#forgotPasswordSection').addClass('hidden');
+                    $('#resetPasswordSection').removeClass('hidden');
+                    alert('Password reset link has been sent to your email (simulated for demo).');
+                } else {
+                    alert('No account found with that email address.');
+                }
+            });
+            
+            // Handle reset password form
+            $('#resetPasswordForm').on('submit', function(e) {
+                e.preventDefault();
+                const newPassword = $('#newPassword').val();
+                const confirmNewPassword = $('#confirmNewPassword').val();
+                const email = $('#resetEmail').val();
+                
+                if (newPassword !== confirmNewPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                // Update password in localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const userIndex = users.findIndex(user => user.email === email);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    alert('Password has been reset successfully. You can now login with your new password.');
+                    
+                    // Redirect to login
+                    $('#resetPasswordSection').addClass('hidden');
+                    $('#loginSection').removeClass('hidden');
+                } else {
+                    alert('Error resetting password. Please try again.');
+                }
+            });
+            
+            // Navigation
+            $('#navHome').on('click', function(e) {
+                e.preventDefault();
+                $('#subjectSelection, #testSelection, #demoTest, #resultsSection, #aiAnalysisSection').addClass('hidden');
+                $('#systemOverview').removeClass('hidden');
+            });
+            
+            $('#navAIAnalysis').on('click', function(e) {
+                e.preventDefault();
+                $('#systemOverview, #subjectSelection, #testSelection, #demoTest, #resultsSection').addClass('hidden');
+                $('#aiAnalysisSection').removeClass('hidden');
+            });
+            
+            // Current state tracking
+            let currentState = 'overview';
+            let selectedSubject = '';
+            let currentTest = 1;
+            let currentQuestion = 1;
+            let testScores = [0, 0, 0];
+            let testDescriptions = [
+                "Fundamentals Assessment",
+                "Intermediate Concepts",
+                "Advanced Topics"
+            ];
+            
+            // Updated questions for demo tests (5 questions per test)
+            const testQuestions = {
+                "Data Science": [
+                    // Test 1 - Fundamentals
+                    [
+                        {
+                            question: "The Bias-Variance tradeoff is a fundamental concept in machine learning. A model with high variance is most likely to:",
+                            options: [
+                                "Be too simple and miss important patterns",
+                                "Be overly complex and learn the noise in the data",
+                                "Make strong assumptions about the underlying relationship"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "In a classification problem with a significant class imbalance (e.g., 98% Class A, 2% Class B), which metric is generally more informative than accuracy?",
+                            options: [
+                                "R-Squared",
+                                "Precision and Recall (F1-Score)",
+                                "Mean Absolute Error"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "What is the primary purpose of a Regularization technique (like Lasso or Ridge Regression)?",
+                            options: [
+                                "To increase the complexity of the model",
+                                "To reduce the number of features in the model",
+                                "To prevent overfitting by penalizing large coefficients"
+                            ],
+                            correct: "C"
+                        },
+                        {
+                            question: "The curse of dimensionality primarily refers to:",
+                            options: [
+                                "Data points becoming sparse and distant in high-dimensional space",
+                                "The increasing cost of data storage as datasets grow larger",
+                                "The difficulty of visualizing data with more than three features"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "In the context of a Confusion Matrix, what does 'Recall' measure?",
+                            options: [
+                                "The proportion of positive predictions that were correct",
+                                "The proportion of actual positives that were correctly identified",
+                                "The overall correctness of the model"
+                            ],
+                            correct: "B"
+                        }
+                    ],
+                    // Test 2 - Intermediate
+                    [
+                        {
+                            question: "Which of the following is NOT a key step in the CRISP-DM data mining process?",
+                            options: [
+                                "Data Preparation",
+                                "Business Understanding",
+                                "Algorithm Selection",
+                                "Deployment"
+                            ],
+                            correct: "C"
+                        },
+                        {
+                            question: "In natural language processing, what does TF-IDF stand for?",
+                            options: [
+                                "Term Frequency - Inverse Document Frequency",
+                                "Text Format - Information Density Factor",
+                                "Token Frequency - Inverse Data Frequency",
+                                "Term Filtering - Information Delivery Format"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "Which evaluation metric is most appropriate for imbalanced classification problems?",
+                            options: [
+                                "Accuracy",
+                                "F1-Score",
+                                "Mean Absolute Error",
+                                "R-Squared"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "What is the primary purpose of Principal Component Analysis (PCA)?",
+                            options: [
+                                "To classify data into categories",
+                                "To reduce dimensionality while preserving variance",
+                                "To cluster similar data points together",
+                                "To predict continuous values"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which algorithm is specifically designed for association rule mining?",
+                            options: [
+                                "K-Means",
+                                "Apriori",
+                                "Random Forest",
+                                "Support Vector Machines"
+                            ],
+                            correct: "B"
+                        }
+                    ],
+                    // Test 3 - Advanced
+                    [
+                        {
+                            question: "In deep learning, what problem does the vanishing gradient problem primarily affect?",
+                            options: [
+                                "Convolutional Neural Networks",
+                                "Recurrent Neural Networks",
+                                "Decision Trees",
+                                "Support Vector Machines"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which technique is commonly used to address overfitting in neural networks?",
+                            options: [
+                                "Batch Normalization",
+                                "Dropout",
+                                "Pooling",
+                                "Data Augmentation"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "What is the main advantage of using a ROC curve for model evaluation?",
+                            options: [
+                                "It works well with imbalanced datasets",
+                                "It provides a single metric for model comparison",
+                                "It shows the tradeoff between true positive and false positive rates",
+                                "All of the above"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "Which of the following is NOT a type of reinforcement learning?",
+                            options: [
+                                "Q-Learning",
+                                "Policy Gradients",
+                                "Monte Carlo Tree Search",
+                                "Gradient Boosting"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "What does XGBoost stand for?",
+                            options: [
+                                "Xtreme Gradient Boosting",
+                                "Xeno Genetic Boosting",
+                                "X-axis Gradient Boosting",
+                                "Xerox Gradient Boosting"
+                            ],
+                            correct: "A"
+                        }
+                    ]
+                ],
+                "Software Engineering": [
+                    // Test 1 - Fundamentals
+                    [
+                        {
+                            question: "What is the primary purpose of a 'Constructor' in Object-Oriented Programming?",
+                            options: [
+                                "To destroy an object and free up memory",
+                                "To initialize a newly created object",
+                                "To perform the core logic of an application"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "In version control with Git, what is the main function of the git rebase command?",
+                            options: [
+                                "To create a new branch from the main codebase",
+                                "To integrate changes from one branch into another by rewriting commit history",
+                                "To permanently discard all changes in the working directory"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which design pattern is primarily used to ensure a class has only one instance and provides a global point of access to it?",
+                            options: [
+                                "Factory Method",
+                                "Observer",
+                                "Singleton"
+                            ],
+                            correct: "C"
+                        },
+                        {
+                            question: "What is the key characteristic of 'Continuous Integration' (CI) in a DevOps workflow?",
+                            options: [
+                                "Automatically deploying code to production immediately after a commit",
+                                "Automatically building and testing code every time a change is merged",
+                                "Using virtual machines instead of physical servers for development"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "In database design, what is 'Normalization' primarily used for?",
+                            options: [
+                                "To improve the speed of read queries by adding redundant data",
+                                "To reduce data redundancy and improve data integrity",
+                                "To convert a database schema from SQL to NoSQL"
+                            ],
+                            correct: "B"
+                        }
+                    ],
+                    // Test 2 - Intermediate
+                    [
+                        {
+                            question: "What is the time complexity of a binary search algorithm?",
+                            options: [
+                                "O(1)",
+                                "O(log n)",
+                                "O(n)",
+                                "O(n log n)"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which principle of SOLID design promotes dependency inversion?",
+                            options: [
+                                "Single Responsibility Principle",
+                                "Open/Closed Principle",
+                                "Liskov Substitution Principle",
+                                "Dependency Inversion Principle"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "In agile development, what is the typical duration of a sprint?",
+                            options: [
+                                "1-2 weeks",
+                                "1 month",
+                                "3 months",
+                                "It varies based on project size"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "What is the main purpose of the Model-View-Controller (MVC) architectural pattern?",
+                            options: [
+                                "To separate concerns between data, presentation, and control logic",
+                                "To optimize database queries",
+                                "To improve network security",
+                                "To enable cross-platform development"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "Which testing approach involves testing the smallest testable parts of an application?",
+                            options: [
+                                "Unit Testing",
+                                "Integration Testing",
+                                "System Testing",
+                                "Acceptance Testing"
+                            ],
+                            correct: "A"
+                        }
+                    ],
+                    // Test 3 - Advanced
+                    [
+                        {
+                            question: "In microservices architecture, what is the purpose of an API Gateway?",
+                            options: [
+                                "To provide a single entry point for all client requests",
+                                "To store session data for distributed systems",
+                                "To manage database connections",
+                                "To compile source code into executable binaries"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "Which algorithm is commonly used for consistent hashing in distributed systems?",
+                            options: [
+                                "MD5",
+                                "SHA-256",
+                                "Ketama",
+                                "BCrypt"
+                            ],
+                            correct: "C"
+                        },
+                        {
+                            question: "What is the primary benefit of using containerization with Docker?",
+                            options: [
+                                "It provides a consistent environment across development and production",
+                                "It makes applications run faster",
+                                "It reduces the need for testing",
+                                "It eliminates the need for version control"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "In domain-driven design, what is a 'Bounded Context'?",
+                            options: [
+                                "A specific responsibility within the system with explicit boundaries",
+                                "The maximum memory allocation for a process",
+                                "The time limit for API responses",
+                                "A security boundary for user authentication"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "Which pattern is used to handle object creation without specifying the exact class of object?",
+                            options: [
+                                "Factory Method",
+                                "Singleton",
+                                "Observer",
+                                "Decorator"
+                            ],
+                            correct: "A"
+                        }
+                    ]
+                ],
+                "Web Development": [
+                    // Test 1 - Fundamentals
+                    [
+                        {
+                            question: "What is the primary purpose of the HTTP POST method in a RESTful API?",
+                            options: [
+                                "To retrieve data from a specified resource",
+                                "To send data to a server to create or update a resource",
+                                "To delete a specified resource"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "In the context of web security, what is the main goal of the Cross-Origin Resource Sharing (CORS) mechanism?",
+                            options: [
+                                "To block all requests from external domains for security",
+                                "To allow a server to specify which origins can access its resources",
+                                "To encrypt data transmitted between the client and server"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which CSS positioning value takes an element out of the normal document flow and positions it relative to its nearest positioned ancestor?",
+                            options: [
+                                "static",
+                                "relative",
+                                "absolute"
+                            ],
+                            correct: "C"
+                        },
+                        {
+                            question: "What is the main difference between localStorage and sessionStorage in the Web Storage API?",
+                            options: [
+                                "localStorage data is cleared when the page session ends, while sessionStorage has no expiration.",
+                                "localStorage data persists until explicitly cleared, while sessionStorage is cleared when the browser tab is closed.",
+                                "sessionStorage can store more data than localStorage."
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "In JavaScript, what is the primary purpose of the Promise object?",
+                            options: [
+                                "To declare a variable that cannot be changed",
+                                "To handle asynchronous operations and their eventual completion or failure",
+                                "To create a new HTML element dynamically"
+                            ],
+                            correct: "B"
+                        }
+                    ],
+                    // Test 2 - Intermediate
+                    [
+                        {
+                            question: "What is the purpose of the Virtual DOM in React?",
+                            options: [
+                                "To improve security by isolating components",
+                                "To optimize performance by minimizing direct DOM manipulation",
+                                "To enable server-side rendering",
+                                "To provide a virtual reality interface"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which CSS feature allows elements to adapt to different screen sizes?",
+                            options: [
+                                "Media Queries",
+                                "CSS Variables",
+                                "Flexbox",
+                                "All of the above"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "What is the main advantage of using a CSS preprocessor like SASS?",
+                            options: [
+                                "It adds programming features like variables and nesting",
+                                "It makes CSS run faster in browsers",
+                                "It reduces the need for JavaScript",
+                                "It automatically fixes browser compatibility issues"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "In JavaScript, what does the 'this' keyword refer to?",
+                            options: [
+                                "The current function",
+                                "The global window object",
+                                "The object that the function is a property of",
+                                "It depends on how the function is called"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "Which HTTP status code indicates a successful creation of a resource?",
+                            options: [
+                                "200 OK",
+                                "201 Created",
+                                "204 No Content",
+                                "301 Moved Permanently"
+                            ],
+                            correct: "B"
+                        }
+                    ],
+                    // Test 3 - Advanced
+                    [
+                        {
+                            question: "What is the primary purpose of Webpack in modern web development?",
+                            options: [
+                                "To bundle and optimize assets for production",
+                                "To provide a development server",
+                                "To transpile modern JavaScript to older versions",
+                                "All of the above"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "Which strategy helps improve Largest Contentful Paint (LCP) performance?",
+                            options: [
+                                "Lazy loading images",
+                                "Removing unused CSS",
+                                "Using a CDN for assets",
+                                "All of the above"
+                            ],
+                            correct: "D"
+                        },
+                        {
+                            question: "What is the main benefit of using GraphQL over REST?",
+                            options: [
+                                "Clients can request exactly the data they need",
+                                "It has better performance for simple queries",
+                                "It doesn't require HTTP for communication",
+                                "It has built-in authentication mechanisms"
+                            ],
+                            correct: "A"
+                        },
+                        {
+                            question: "In React, what is the purpose of the useMemo hook?",
+                            options: [
+                                "To manage side effects",
+                                "To optimize performance by memoizing expensive calculations",
+                                "To handle component state",
+                                "To create context providers"
+                            ],
+                            correct: "B"
+                        },
+                        {
+                            question: "Which technique helps prevent CSS class name collisions?",
+                            options: [
+                                "CSS Modules",
+                                "BEM methodology",
+                                "CSS-in-JS",
+                                "All of the above"
+                            ],
+                            correct: "D"
+                        }
+                    ]
+                ]
+            };
+            
+            // Show subject selection when Get Started is clicked
+            $("#getStartedBtn").click(function() {
+                $("#systemOverview").addClass("hidden");
+                $("#subjectSelection").removeClass("hidden");
+                currentState = 'subjectSelection';
+            });
+            
+            // Handle subject selection
+            $(".subject-card").click(function() {
+                selectedSubject = $(this).data("subject");
+                $("#testSubject").text(selectedSubject);
+                
+                $("#subjectSelection").addClass("hidden");
+                $("#testSelection").removeClass("hidden");
+                currentState = 'testSelection';
+                
+                // Reset test scores display
+                $("#test1ScoreDisplay, #test2ScoreDisplay, #test3ScoreDisplay").text("-");
+                
+                // Load any previously saved scores
+                const savedScores = JSON.parse(localStorage.getItem(`testScores_${selectedSubject}`) || '{"1":0, "2":0, "3":0}');
+                if (savedScores["1"] > 0) $("#test1ScoreDisplay").text(savedScores["1"]);
+                if (savedScores["2"] > 0) $("#test2ScoreDisplay").text(savedScores["2"]);
+                if (savedScores["3"] > 0) $("#test3ScoreDisplay").text(savedScores["3"]);
+                
+                // Check if all tests are completed
+                if (savedScores["1"] > 0 && savedScores["2"] > 0 && savedScores["3"] > 0) {
+                    $("#viewResultsBtn").removeClass("hidden");
+                    testScores = [savedScores["1"], savedScores["2"], savedScores["3"]];
+                } else {
+                    $("#viewResultsBtn").addClass("hidden");
+                }
+            });
+            
+            // Handle test selection
+            $(".test-card").click(function() {
+                currentTest = parseInt($(this).data("test"));
+                
+                // Check if test is already completed
+                const savedScores = JSON.parse(localStorage.getItem(`testScores_${selectedSubject}`) || '{"1":0, "2":0, "3":0}');
+                if (savedScores[currentTest] > 0) {
+                    if (confirm("You've already completed this test. Would you like to retake it?")) {
+                        startTest();
+                    }
+                } else {
+                    startTest();
+                }
+            });
+            
+            function startTest() {
+                $("#testSelection").addClass("hidden");
+                $("#demoTest").removeClass("hidden");
+                
+                $("#currentSubject").text(selectedSubject);
+                $("#currentTestNumber").text(currentTest);
+                $("#testDescription").text(testDescriptions[currentTest-1]);
+                
+                // Reset test progress
+                currentQuestion = 1;
+                updateTestProgress();
+                loadQuestion();
+            }
+            
+            // Back to subjects button
+            $("#backToSubjectsBtn").click(function() {
+                $("#testSelection").addClass("hidden");
+                $("#subjectSelection").removeClass("hidden");
+            });
+            
+            // View results button
+            $("#viewResultsBtn").click(function() {
+                $("#testSelection").addClass("hidden");
+                showResults();
+            });
+            
+            // Load question based on current test and question number
+            function loadQuestion() {
+                const questions = testQuestions[selectedSubject][currentTest-1];
+                
+                if (currentQuestion <= questions.length) {
+                    const question = questions[currentQuestion-1];
+                    $("#questionTitle").text(`Question ${currentQuestion}`);
+                    $("#questionText").text(question.question);
+                    
+                    // Clear previous selections
+                    $("input[name='answer']").prop("checked", false);
+                    
+                    // Update options
+                    question.options.forEach((option, index) => {
+                        $(`#option${index+1}`).siblings("label").text(option);
+                    });
+                    
+                    // Show/hide buttons
+                    if (currentQuestion === questions.length) {
+                        $("#nextQuestionBtn").addClass("hidden");
+                        $("#submitTestBtn").removeClass("hidden");
+                    } else {
+                        $("#nextQuestionBtn").removeClass("hidden");
+                        $("#submitTestBtn").addClass("hidden");
+                    }
+                }
+            }
+            
+            // Update test progress UI
+            function updateTestProgress() {
+                const questions = testQuestions[selectedSubject][currentTest-1];
+                const progressPercent = ((currentQuestion - 1) / questions.length * 100);
+                $("#testProgress").css("width", `${progressPercent}%`);
+                $("#testStatus").text(`Question ${currentQuestion} of ${questions.length}`);
+            }
+            
+            // Handle next question button
+            $("#nextQuestionBtn").click(function() {
+                currentQuestion++;
+                updateTestProgress();
+                loadQuestion();
+            });
+            
+            // Handle test submission
+            $("#submitTestBtn").click(function() {
+                // For demo, generate a random score between 50-90
+                const score = Math.floor(Math.random() * 41) + 50;
+                testScores[currentTest - 1] = score;
+                
+                // Save score to localStorage
+                const savedScores = JSON.parse(localStorage.getItem(`testScores_${selectedSubject}`) || '{"1":0, "2":0, "3":0}');
+                savedScores[currentTest] = score;
+                localStorage.setItem(`testScores_${selectedSubject}`, JSON.stringify(savedScores));
+                
+                // Update the test score display
+                $(`#test${currentTest}ScoreDisplay`).text(score);
+                
+                // Show notification about test completion
+                alert(`Test ${currentTest} completed! Your score: ${score}/100`);
+                
+                // Return to test selection
+                $("#demoTest").addClass("hidden");
+                $("#testSelection").removeClass("hidden");
+                
+                // Check if all tests are completed
+                const allScores = JSON.parse(localStorage.getItem(`testScores_${selectedSubject}`) || '{"1":0, "2":0, "3":0}');
+                if (allScores["1"] > 0 && allScores["2"] > 0 && allScores["3"] > 0) {
+                    $("#viewResultsBtn").removeClass("hidden");
+                    testScores = [allScores["1"], allScores["2"], allScores["3"]];
+                }
+            });
+            
+            // Show results with AI recommendation
+            function showResults() {
+                $("#resultsSection").removeClass("hidden");
+                currentState = 'results';
+                
+                // Update result subject
+                $("#resultSubject").text(selectedSubject);
+                
+                // Update test scores
+                $("#test1Score").text(testScores[0]);
+                $("#test2Score").text(testScores[1]);
+                $("#test3Score").text(testScores[2]);
+                
+                // Find best score
+                const bestScore = Math.max(...testScores);
+                $("#bestScore").text(bestScore);
+                
+                // Determine level based on best score
+                let level, course, levelClass;
+                if (bestScore < 50) {
+                    level = "Beginner";
+                    levelClass = "beginner";
+                    course = "Introduction to " + selectedSubject + " Fundamentals";
+                } else if (bestScore < 80) {
+                    level = "Intermediate";
+                    levelClass = "intermediate";
+                    course = selectedSubject + " Core Concepts and Applications";
+                } else {
+                    level = "Advanced";
+                    levelClass = "advanced";
+                    course = "Advanced " + selectedSubject + " Techniques and Specializations";
+                }
+                
+                // Update level and course
+                $("#resultLevel").text(level).removeClass("beginner intermediate advanced").addClass(levelClass);
+                $("#recommendedCourse").text(course);
+                
+                // Generate learning path based on level
+                const learningPathElement = $("#learningPath");
+                learningPathElement.empty();
+                
+                let modules = [];
+                if (level === "Beginner") {
+                    modules = [
+                        "Introduction to Key Concepts",
+                        "Fundamental Principles",
+                        "Basic Tools and Techniques",
+                        "Simple Projects and Applications"
+                    ];
+                } else if (level === "Intermediate") {
+                    modules = [
+                        "Core Concepts Review",
+                        "Advanced Techniques",
+                        "Real-world Applications",
+                        "Project Development"
+                    ];
+                } else {
+                    modules = [
+                        "Advanced Theory and Concepts",
+                        "Specialized Techniques",
+                        "Complex Problem Solving",
+                        "Capstone Project"
+                    ];
+                }
+                
+                modules.forEach((module, index) => {
+                    learningPathElement.append(`
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="step-number">${index + 1}</div>
+                            <div>${module}</div>
+                        </div>
+                    `);
+                });
+            }
+            
+            // View AI Analysis button
+            $("#viewAIAnalysisBtn").click(function() {
+                $("#resultsSection").addClass("hidden");
+                $("#aiAnalysisSection").removeClass("hidden");
+            });
+            
+            // Initialize the application
+            checkLoginStatus();
+            
+            // AI Model Implementation Script
+            // Simulated performance chart
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Epoch 1', 'Epoch 5', 'Epoch 10', 'Epoch 15', 'Epoch 20', 'Epoch 25', 'Epoch 30'],
+                    datasets: [{
+                        label: 'Training Accuracy',
+                        data: [65, 78, 83, 87, 89, 91, 92],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Validation Accuracy',
+                        data: [63, 76, 80, 84, 87, 89, 91],
+                        borderColor: '#3a0ca3',
+                        backgroundColor: 'rgba(58, 12, 163, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Model Accuracy Over Training Epochs'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Simulate training progress
+            const trainButton = document.getElementById('trainModel');
+            const pauseButton = document.getElementById('pauseModel');
+            const resetButton = document.getElementById('resetModel');
+            
+            let trainingInterval;
+            
+            trainButton.addEventListener('click', function() {
+                const progressBar = document.querySelector('.progress-bar:nth-child(4)');
+                let width = 75;
+                
+                trainingInterval = setInterval(function() {
+                    width += 1;
+                    progressBar.style.width = width + '%';
+                    progressBar.setAttribute('aria-valuenow', width);
+                    progressBar.textContent = width + '% Complete';
+                    
+                    if (width >= 100) {
+                        clearInterval(trainingInterval);
+                        
+                        // Start validation phase
+                        const validationBar = document.querySelector('.progress-bar:last-child');
+                        let valWidth = 0;
+                        
+                        trainingInterval = setInterval(function() {
+                            valWidth += 2;
+                            validationBar.style.width = valWidth + '%';
+                            validationBar.setAttribute('aria-valuenow', valWidth);
+                            validationBar.textContent = valWidth + '% Complete';
+                            
+                            if (valWidth >= 100) {
+                                clearInterval(trainingInterval);
+                                alert('Model training completed successfully!');
+                            }
+                        }, 100);
+                    }
+                }, 100);
+            });
+            
+            pauseButton.addEventListener('click', function() {
+                clearInterval(trainingInterval);
+            });
+            
+            resetButton.addEventListener('click', function() {
+                clearInterval(trainingInterval);
+                
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars[3].style.width = '75%';
+                progressBars[3].setAttribute('aria-valuenow', 75);
+                progressBars[3].textContent = '75% Complete';
+                
+                progressBars[4].style.width = '0%';
+                progressBars[4].setAttribute('aria-valuenow', 0);
+                progressBars[4].textContent = '0% Complete';
+            });
+            
+            // Update parameter values when sliders change
+            document.getElementById('learningRate').addEventListener('input', function() {
+                this.nextElementSibling.textContent = 'Current: ' + this.value;
+            });
+            
+            document.getElementById('nEstimators').addEventListener('input', function() {
+                this.nextElementSibling.textContent = 'Current: ' + this.value;
+            });
+            
+            document.getElementById('maxDepth').addEventListener('input', function() {
+                this.nextElementSibling.textContent = 'Current: ' + this.value;
+            });
+            
+            document.getElementById('subsample').addEventListener('input', function() {
+                this.nextElementSibling.textContent = 'Current: ' + this.value;
+            });
+        });
+    </script>
+</body>
+</html>
